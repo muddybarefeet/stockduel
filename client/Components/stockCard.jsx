@@ -71,7 +71,7 @@ export const Stock = React.createClass({
             </div>
 
             <div className="nine columns">
-              <StockChart />
+              <StockChart symbol={symbol} />
             </div>
 
            < /CardText>
