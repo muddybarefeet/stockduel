@@ -8,24 +8,10 @@ import $ from 'jquery';
 export const StockChart = React.createClass ({
 
   componentWillMount () {
-
-    //variable for the current date
-    let dateNow;
-    let dateWeekBefore;
-    dateNow = Date.now();
-    if (!dateWeekBefore) {
-      //change dateWeekBefore to look at the start date of the match for the moment use this
-      dateWeekBefore = dateNow - 604800000;
-    }
-    //make variables for the current date
-    let yearNow = new Date(dateNow).getFullYear();
-    let monthNow = new Date(dateNow).getMonth();
-    let dayNow = new Date(dateNow).getDate();
-    //variables for the start date
-    let yearStart = new Date(dateWeekBefore).getFullYear();
-    let monthStart = new Date(dateWeekBefore).getMonth();
-    let dayStart = new Date(dateWeekBefore).getDate();
-
+    
+    let close = [];
+    let xAxis = [];
+    let that = this;
     $.ajax({
         type: "GET",
         headers: {"Access-Control-Allow-Origin": "*",
@@ -33,22 +19,32 @@ export const StockChart = React.createClass ({
         url:'http://localhost:8080/stocks/history/'+this.props.symbol
     }).done(function (data) {
         console.log(data)
+        //make array of close data in order of dates
+        //loop through the dates 
+        for (var i = 0; i < data.dates.length; i++) {
+          close.push(data.data[data.dates[i]])
+        }
+        close.unshift('close')
+
+        console.log('close', close);
+        //make the array of dates have x at start for c3
+        xAxis = data.dates;
+        xAxis.unshift('x');
+
+        that.buildChart(close, xAxis);
     });
-    
+
   },
 
-  componentDidMount(){
-    this.buildChart(this.props.stocks);
-  },
-
-  buildChart(stocks) {
+  buildChart(close, xAxis) {
+    console.log('in build',close, xAxis);
     c3.generate({
       bindto: ReactDOM.findDOMNode(this.refs.chart),
       data: {
         x: 'x',
         columns: [
-          ['x', '2013-01-01', '2013-01-02', '2013-01-03', '2013-01-04', '2013-01-05', '2013-01-06'],
-          ['close', 30, 200, 100, 400, 150, 250]
+          xAxis,
+          close
         ]
       },
       axis: {

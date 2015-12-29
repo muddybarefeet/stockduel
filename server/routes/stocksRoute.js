@@ -106,7 +106,8 @@ module.exports = function (knex) {
           });
 
           returnObj.data = data;
-          returnObj.dates = dates;
+          //reverse date array so earliest date is at the start
+          returnObj.dates = dates.reverse();
 
           res.status(200)
           .send(returnObj);
