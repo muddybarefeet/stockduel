@@ -23,7 +23,7 @@
     "c3": "^0.4.10",
     "cookie-parser": "^1.4.0",
     "d3": "^3.5.12",
-    "express": "^4.13.3",
+    "express": "^4.13.5",
     "express-session": "^1.12.1",
     "font-awesome": "^4.5.0",
     "history": "^1.17.0",
