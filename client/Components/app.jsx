@@ -58,7 +58,7 @@ let App = React.createClass({
     (<ToolbarGroup float="right">
       <button className="navButton"><Link className="navButtonFontSize" to="/matches">My Matches</Link></button> 
       <button className="navButton"><Link className="navButtonFontSize" to="/join">Matches To Join</Link></button>
-      <button className="navButton"><Link className="navButtonFontSize" to="/search">Search</Link></button>
+      <button className="navButton"><Link className="navButtonFontSize" to="/search"><i className="fa fa-search fa-lg"></i></Link></button>
       <RaisedButton label="Create a Match" onTouchTap={this.handleOpen} />
       <Dialog
         modal={false}
