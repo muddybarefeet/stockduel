@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { toJS } from 'immutable';
 import request from 'superagent';
 const moment = require('moment');
+var numeral = require('numeral');
+
 var injectTapEventPlugin = require("react-tap-event-plugin");
 injectTapEventPlugin();
 
@@ -45,7 +47,7 @@ export const MatchCard = React.createClass({
 
     let forHeadToHead = (<div>
                           <p>Opponent: {this.opponent}</p>
-                          <p>Portfolio: {this.opponentPortfolio && "$" + Number(this.opponentPortfolio.totalValue).toFixed(2)}</p>
+                          <p>Portfolio: {this.opponentPortfolio && "$" + numeral(Number(this.opponentPortfolio.totalValue).toFixed(2)).format('0,0')}</p>
                         </div>);
 
     let startDate = match.get('startdate');
@@ -74,7 +76,7 @@ export const MatchCard = React.createClass({
 
           <div className="player1">
             <div>
-              <p>Your Portfolio: {'$' + Number(match.getIn(['portfolio', 'totalValue'])).toFixed(2)}</p>
+              <p>Your Portfolio: {'$' + numeral(Number(match.getIn(['portfolio', 'totalValue'])).toFixed(2)).format('0,0')}</p>
             </div>
           </div>
 
