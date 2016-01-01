@@ -54,7 +54,7 @@ export const MatchCard = React.createClass({
     let end = moment(endDate).fromNow();
 
     return (
-      <div className="paddingTop container">
+      <div className="paddingTop container listMatchCards">
 
         <Card initiallyExpanded={false}>
           <CardHeader
