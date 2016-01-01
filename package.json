@@ -25,7 +25,6 @@
     "d3": "^3.5.12",
     "express": "^4.13.5",
     "express-session": "^1.12.1",
-    "font-awesome": "^4.5.0",
     "history": "^1.17.0",
     "material-ui": "^0.14.0",
     "mocha": "^2.3.4",
