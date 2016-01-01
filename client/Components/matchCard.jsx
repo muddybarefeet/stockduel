@@ -65,7 +65,7 @@ export const MatchCard = React.createClass({
           </CardHeader>
 
           <CardText expandable={true}>
-          <br></br>
+          <hr style={{marginTop:'-14px'}} />
           <div className="row">
             <p>Type: {match.get('type')}</p>
             <p>Start: {start}</p>
@@ -87,7 +87,7 @@ export const MatchCard = React.createClass({
           <CardActions expandable={true}>
            <div className='rightButton'>
               
-              <RaisedButton label="Go to portfolio"
+              <RaisedButton secondry={true} label="Go to portfolio"
                linkButton={true} onClick={setMatch} />
 
            </div>

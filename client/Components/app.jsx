@@ -11,6 +11,9 @@ import { Link } from 'react-router';
 import request from 'superagent';
 import { CreateMatchDumb } from './createMatch.jsx';
 
+import Divider from 'material-ui/lib/divider';
+import IconMenu from 'material-ui/lib/menus/icon-menu';
+import MenuItem from 'material-ui/lib/menus/menu-item';
 import Dialog from 'material-ui/lib/dialog';
 import RaisedButton from 'material-ui/lib/raised-button';
 
@@ -20,20 +23,13 @@ const ToolbarGroup = require('material-ui/lib/toolbar/toolbar-group');
 const ToolbarSeparator = require('material-ui/lib/toolbar/toolbar-separator');
 
 
+
 let App = React.createClass({
   
   getInitialState() {
       return {
         open: false  
       };
-  },
-
-  handleOpen () {
-    this.setState({open: true});
-  },
-
-  handleClose () {
-    this.setState({open: false});
   },
 
   logIn() {
@@ -46,29 +42,59 @@ let App = React.createClass({
       })
   },
 
+
   componentWillMount() {
-      this.props.setInitialState(); // get the userId  
+    this.props.setInitialState(); // get the userId
+  },
+
+  getUserName () {
+    this.username;
+    var that = this;
+    console.log('props', this.props)
+    request.get('/users/' + this.props.userId)
+      .end((err, res) => {
+        if (err) {
+          console.error(err)
+        } else {
+          console.log('data', res.body)
+          that.username= res.body.data.username;
+          console.log('thing',that.state.username, this.state.username)
+          this.render();
+        }
+      });
+  },
+
+  logIn() {
+    request.get('/auth/facebook')
+      .end(function(err, res) {
+        /* 
+        We never enter this callback.
+        Goes to Facebook, redirects to /loggedIn which redirects to / (root).
+        */
+      })
   },
   
   render() {
 
     const { buy, sell, setCurrentMatch, setInitialState, userId, logout, createMatch } = this.props;
-
+    console.log('props in app.jsx',this.props)
     const userButtons = 
     (<ToolbarGroup float="right">
-      <button className="navButton"><Link className="navButtonFontSize" to="/matches">My Matches</Link></button> 
-      <button className="navButton"><Link className="navButtonFontSize" to="/join">Matches To Join</Link></button>
-      <button className="navButton"><Link className="navButtonFontSize" to="/search"><i className="fa fa-search fa-lg"></i></Link></button>
-      <RaisedButton label="Create a Match" onTouchTap={this.handleOpen} />
-      <Dialog
-        modal={false}
-        open={this.state.open}
-        onRequestClose={this.handleClose}>
-        <CreateMatchDumb userId={userId} createMatch={createMatch} />
-      </Dialog>
-      <button className="navButton" onClick={()=>{logout()}}><Link className="navButtonFontSize" to="/#">Logout</Link></button>
-    </ToolbarGroup>);
+      <button className="navButton" style={{marginRight:"30px"}}><h6 className="inverseTextColor">Hello: {this.username}</h6></button>
+      <button className="navButton" style={{marginRight:"30px"}}><h6 className="inverseTextColor">Current Match: {console.log('sjjs',this.props)}</h6></button>
+      {/*<button className="navButton"><Link className="navButtonFontSize" to="/matches">My Matches</Link></button> 
+       <button className="navButton"><Link className="navButtonFontSize" to="/join">Join a Match</Link></button>
+       <button className="navButton" onClick={()=>{logout()}}><Link className="navButtonFontSize" to="/#">Logout</Link></button>*/}
 
+      <IconMenu iconButtonElement={<i className="fa fa-university fa-lg"></i>} >
+        <MenuItem primaryText="Your Matches" onClick={ ()=>{ window.location.hash="#/matches" } } />
+        <MenuItem primaryText="Matches to Join" onClick={ ()=>{ window.location.hash="#/join" } } />
+        <Divider />
+        <MenuItem primaryText="Sign out" onClick={ ()=>{ logout(); window.location.hash="#/"; } } />
+      </IconMenu>
+
+    </ToolbarGroup>);
+    
     return (
       <div>
       <Toolbar
@@ -76,7 +102,6 @@ let App = React.createClass({
           <ToolbarGroup float="left" className="logoTopPad"><Link className="navButtonFontSize" to="/"><img className="navLogo" src='../assets/images/whiteLogo.png' alt="stockduel white logo" /></Link></ToolbarGroup>
           { !!userId ? userButtons : null }
         </Toolbar>
-
       </div>
     )
   }
